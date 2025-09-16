@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: aestrial-hack
+    env: node
+    buildCommand: npm install && chmod +x ./deploy.sh && ./deploy.sh
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: RENDER
+        value: true
+      - key: COOKIE_SECURE
+        value: true 
+      - key: COOKIE_SAME_SITE
+        value: none
+      - key: PUBLIC_URL
+        value: https://allfixedpanel.onrender.com/
+    disk:
+      name: data-dir
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1

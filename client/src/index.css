@@ -1,0 +1,818 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Force dark mode for all browsers */
+html {
+  color-scheme: dark !important;
+}
+
+:root {
+  /* Light theme colors (not used as we're enforcing dark mode) */
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 270 70% 54%; /* Purple primary */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 280 70% 40%; /* Darker purple secondary */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 285 100% 60%; /* Brighter purple accent */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 270 70% 54%;
+  --radius: 0.5rem;
+}
+
+/* Apply dark theme by default without .dark class */
+:root {
+  /* Dark theme with black and purple */
+  --background: 240 10% 3.9%; /* Near black */
+  --foreground: 0 0% 98%;
+  --muted: 240 5% 9%; /* Very dark gray */
+  --muted-foreground: 240 5% 70%;
+  --popover: 240 10% 5%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 6%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 5% 12%;
+  --input: 240 5% 12%;
+  --primary: 270 70% 54%; /* Purple primary */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 280 70% 40%; /* Darker purple secondary */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 285 100% 60%; /* Bright violet accent */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 270 70% 54%;
+  --radius: 0.5rem;
+}
+
+/* Apply styles to all elements to support the dark theme scheme */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+  
+  /* Force background colors for all key components */
+  .card,
+  .popover,
+  .sheet,
+  .dialog,
+  .dropdown-menu,
+  .select,
+  .button,
+  .input {
+    @apply bg-background border-border text-foreground !important;
+  }
+  
+  /* Add purple glow to buttons and interactive elements */
+  .button:hover,
+  .link:hover,
+  .card:hover {
+    box-shadow: 0 0 8px 2px rgba(149, 76, 233, 0.2);
+  }
+  
+  /* Make text in cards more visible */
+  .card-title {
+    @apply text-foreground font-semibold;
+  }
+  
+  /* Add gradient text effect to headings */
+  h1, h2, h3 {
+    @apply bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent;
+  }
+}
+
+/* Custom scrollbar styles for code blocks */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border));
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground));
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thumb-border::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border));
+}
+
+/* Mobile responsiveness enhancements */
+@media (max-width: 768px) {
+  .grid {
+    @apply grid-cols-1 gap-4;
+  }
+  
+  .flex {
+    @apply flex-wrap;
+  }
+  
+  .card {
+    @apply w-full;
+  }
+  
+  h1, h2 {
+    @apply text-xl;
+  }
+  
+  .p-6 {
+    @apply p-3;
+  }
+}
+
+/* Gradient background for special elements */
+.bg-gradient {
+  background: linear-gradient(135deg, rgba(76, 29, 149, 0.2) 0%, rgba(91, 33, 182, 0.1) 100%);
+}
+
+/* Glow effect for important UI elements */
+.glow {
+  box-shadow: 0 0 15px 2px rgba(149, 76, 233, 0.3);
+  transition: all 0.3s ease;
+  animation: glow-pulse 4s infinite alternate;
+}
+
+.glow:hover {
+  box-shadow: 0 0 20px 5px rgba(149, 76, 233, 0.5);
+  animation: glow-pulse-fast 2s infinite alternate;
+}
+
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 15px 2px rgba(149, 76, 233, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px rgba(149, 76, 233, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 25px 6px rgba(149, 76, 233, 0.4);
+  }
+}
+
+@keyframes glow-pulse-fast {
+  0% {
+    box-shadow: 0 0 20px 3px rgba(149, 76, 233, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px 6px rgba(149, 76, 233, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 30px 8px rgba(149, 76, 233, 0.5);
+  }
+}
+
+/* Text glow effect */
+.glow-text {
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+  animation: text-glow-pulse 4s infinite alternate;
+}
+
+@keyframes text-glow-pulse {
+  0% {
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(168, 85, 247, 0.6), 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+  }
+}
+
+/* Shining/pulsing animation for elements */
+@keyframes shine {
+  0% {
+    box-shadow: 0 0 5px 0px rgba(168, 85, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px 5px rgba(168, 85, 247, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 5px 0px rgba(168, 85, 247, 0.3);
+  }
+}
+
+.shine {
+  animation: shine 3s infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
+}
+
+/* Moving glow elements */
+.moving-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.moving-glow::before,
+.moving-glow::after {
+  content: "";
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  top: -25%;
+  left: -25%;
+  z-index: -1;
+  background: 
+    radial-gradient(
+      circle at center,
+      rgba(168, 85, 247, 0.3) 0%,
+      rgba(168, 85, 247, 0.1) 30%,
+      transparent 70%
+    );
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: move-glow 10s linear infinite;
+}
+
+.moving-glow::after {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: 
+    radial-gradient(
+      circle at center,
+      rgba(139, 92, 246, 0.3) 0%,
+      rgba(139, 92, 246, 0.1) 20%,
+      transparent 60%
+    );
+  animation: move-glow 15s linear infinite reverse;
+}
+
+/* Login form with moving border glow */
+.form-border-glow {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+}
+
+.form-border-glow::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  border: 3px solid #a855f7;
+  border-radius: inherit;
+  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.7));
+  animation: border-rotate 8s linear infinite;
+}
+
+/* Add a pseudo-element for the moving border effect */
+.form-border-glow::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -2;
+  border: 3px solid transparent;
+  border-radius: inherit;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.7);
+}
+
+@keyframes border-rotate {
+  0% {
+    clip-path: inset(0 0 calc(100% - 3px) 0);
+  }
+  12.5% {
+    clip-path: inset(0 0 0 calc(100% - 3px));
+  }
+  25% {
+    clip-path: inset(0 0 0 calc(100% - 3px));
+  }
+  37.5% {
+    clip-path: inset(calc(100% - 3px) 0 0 0);
+  }
+  50% {
+    clip-path: inset(calc(100% - 3px) 0 0 0);
+  }
+  62.5% {
+    clip-path: inset(0 calc(100% - 3px) 0 0);
+  }
+  75% {
+    clip-path: inset(0 calc(100% - 3px) 0 0);
+  }
+  87.5% {
+    clip-path: inset(0 0 calc(100% - 3px) 0);
+  }
+  100% {
+    clip-path: inset(0 0 calc(100% - 3px) 0);
+  }
+}
+
+@keyframes move-glow {
+  0% {
+    transform: translate(-30%, -30%) rotate(0deg);
+  }
+  25% {
+    transform: translate(30%, -30%) rotate(90deg);
+  }
+  50% {
+    transform: translate(30%, 30%) rotate(180deg);
+  }
+  75% {
+    transform: translate(-30%, 30%) rotate(270deg);
+  }
+  100% {
+    transform: translate(-30%, -30%) rotate(360deg);
+  }
+}
+
+/* Animated border glow */
+.border-glow {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+}
+
+.border-glow::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  background: linear-gradient(45deg, 
+    rgba(123, 31, 162, 0.7),
+    rgba(103, 58, 183, 0),
+    rgba(79, 98, 208, 0.7),
+    rgba(129, 18, 183, 0),
+    rgba(123, 31, 162, 0.7)
+  );
+  background-size: 400% 400%;
+  border-radius: inherit;
+  animation: border-glow-animation 15s ease infinite;
+  filter: blur(5px);
+}
+
+@keyframes border-glow-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Floating animation */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Hamburger menu animation */
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hamburger-fade-in {
+  animation: fadeInLeft 0.3s ease-out forwards;
+}
+
+/* Input box with moving border */
+.input-border-glow {
+  position: relative;
+  z-index: 0;
+}
+
+.input-border-glow::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, 
+    #a855f7, 
+    #8b5cf6, 
+    #6366f1, 
+    #8b5cf6, 
+    #a855f7
+  );
+  background-size: 300% 100%;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: none;
+  /* We'll re-enable this animation in the fix below */
+}
+
+@keyframes input-border-animation {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 300% 0%; }
+}
+
+/* Complete fix for moving text */
+body {
+  overflow-x: hidden;
+}
+
+/* Stabilize all text elements */
+h1, h2, h3, h4, h5, h6, p, span, div, button, a, label, input, 
+.card-title, .card-description, .text-xs, .text-sm, .text-lg, 
+.text-xl, .text-2xl, .text-3xl, .text-4xl {
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: geometricPrecision !important;
+  letter-spacing: normal !important;
+  will-change: auto !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Only allow animations on specific elements */
+.input-border-glow::before {
+  animation: input-border-animation 6s linear infinite !important;
+}
+
+.form-border-glow::before {
+  animation: border-rotate 8s linear infinite !important;
+}
+
+.hamburger-fade-in {
+  animation: fadeInLeft 0.3s ease-out forwards !important;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite !important;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+}
+
+.glow-text {
+  animation: glow 1.5s ease-in-out infinite alternate !important;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px rgba(168, 85, 247, 0.5), 0 0 10px rgba(168, 85, 247, 0.3);
+  }
+  to {
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.8), 0 0 20px rgba(168, 85, 247, 0.5);
+  }
+}
+
+/* ============================================ */
+/* CRITICAL MOBILE FIXES FOR ALL COMPONENTS */
+/* ============================================ */
+
+/* Force consistent dropdown positioning on mobile */
+@media (max-width: 768px) {
+  /* All dropdown/popover content positioning */
+  [data-radix-popper-content-wrapper] {
+    position: fixed !important;
+    top: auto !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    z-index: 99999 !important;
+    max-width: 100vw !important;
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+    box-shadow: 0 -5px 20px -5px rgba(0, 0, 0, 0.5) !important;
+  }
+  
+  .dropdown-menu-content {
+    width: 100% !important;
+    max-width: 100vw !important;
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-width: 1px !important;
+    border-color: rgba(124, 58, 237, 0.2) !important;
+    background: hsl(var(--background)) !important;
+    animation: slideUp 0.2s ease-out !important;
+    padding-top: 4px !important;
+    padding-bottom: calc(4px + env(safe-area-inset-bottom)) !important;
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Select dropdown specific positioning and styling */
+  [data-radix-select-content] {
+    position: fixed !important;
+    top: auto !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    z-index: 99999 !important;
+    max-height: 60vh !important;
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-width: 1px !important;
+    border-color: rgba(168, 85, 247, 0.3) !important;
+    background: hsl(var(--background)) !important;
+    animation: slideUp 0.2s ease-out !important;
+    padding-top: 4px !important;
+    padding-bottom: calc(4px + env(safe-area-inset-bottom)) !important;
+  }
+  
+  /* Context menu specific positioning */
+  [data-radix-context-menu-content] {
+    position: fixed !important;
+    top: auto !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    z-index: 99999 !important;
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-width: 1px !important;
+    border-color: rgba(168, 85, 247, 0.3) !important;
+    background: hsl(var(--background)) !important;
+    animation: slideUp 0.2s ease-out !important;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Increase touch targets for all interactive elements */
+  [data-radix-select-item],
+  [role="menuitem"],
+  [role="option"],
+  .mobile-touch-target {
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 12px 10px 12px 30px !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Ensure text truncation for dropdown items */
+  [data-radix-select-item-text],
+  [role="menuitem"] span {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 85vw !important;
+  }
+  
+  /* Improve dialog/modal mobile styling */
+  [role="dialog"] {
+    max-width: 98vw !important;
+    width: 98vw !important;
+    margin: 0 auto !important;
+  }
+  
+  /* Mobile-friendly form elements */
+  input, select, textarea, button {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    min-height: 44px !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Improve mobile table layouts */
+  table {
+    display: block !important;
+    max-width: 100vw !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* Card improvements for mobile */
+  .card {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
+/* Dialog/modal component fixes for all screen sizes */
+[data-state="open"][role="dialog"],
+[data-state="open"][role="alertdialog"] {
+  position: fixed !important;
+  z-index: 99999 !important;
+  max-height: 95vh !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+/* Dialog overlay z-index fix */
+[role="dialog"] > [data-state="open"] {
+  z-index: 99998 !important;
+}
+
+/* Make dialogs scrollable on mobile with proper padding */
+[role="dialog"] > [data-state="open"] > div {
+  padding: 16px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Fix for keyboard focus causing unintended scrolling */
+html, body {
+  overscroll-behavior-y: none !important;
+  position: relative !important;
+  height: 100% !important;
+}
+
+/* Fix for key details dialog specifically */
+.key-details-dialog {
+  width: 100vw !important;
+  max-width: 450px !important;
+  margin: 0 auto !important;
+}
+
+/* Mobile dialog improvements */
+.mobile-dialog-content {
+  width: 100% !important;
+  max-width: 100% !important;
+  max-height: 85vh !important;
+  margin: 0 !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: auto !important;
+  transform: none !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-top-left-radius: 16px !important;
+  border-top-right-radius: 16px !important;
+  animation: slideUpDialog 0.3s ease-out !important;
+}
+
+.mobile-dialog-handle {
+  width: 40px !important;
+  height: 5px !important;
+  background-color: rgba(139, 92, 246, 0.4) !important;
+  border-radius: 3px !important;
+  margin: 10px auto !important;
+  position: relative !important;
+  cursor: grab !important;
+}
+
+@keyframes slideUpDialog {
+  from {
+    transform: translateY(100%) !important;
+  }
+  to {
+    transform: translateY(0) !important;
+  }
+}
+
+/* Add special styling for mobile dialogs */
+@media (max-width: 768px) {
+  /* Bottom sheet style for mobile dialogs */
+  .mobile-dialog-content {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+    max-height: 90vh !important;
+    background-color: hsl(var(--background)) !important;
+    border-color: rgba(139, 92, 246, 0.2) !important;
+    animation: slide-up-mobile 0.3s ease-out !important;
+    padding-bottom: env(safe-area-inset-bottom, 16px) !important;
+    box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  @keyframes slide-up-mobile {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Add handle for mobile sheet dialogs */
+  .mobile-dialog-handle {
+    width: 40px;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    margin: 8px auto 4px auto;
+  }
+  
+  /* Style the mobile dialog header */
+  [class*="MobileDialogHeader"] {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+}
+

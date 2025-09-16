@@ -1,0 +1,100 @@
+import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import { Redirect } from "wouter";
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui/tabs";
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Lock, 
+  UserCheck, 
+  User, 
+  MailCheck, 
+  ShieldCheck,
+  LogIn,
+  UserPlus
+} from "lucide-react";
+
+// Login form schema
+const loginSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  password: z.string().min(4, "Password must be at least 4 characters"),
+  role: z.enum(["admin", "reseller"]).default("reseller")
+});
+
+// Registration form schema
+const registerSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  password: z.string().min(4, "Password must be at least 4 characters"),
+  referralToken: z.string().min(4, "Referral token is required")
+});
+
+type LoginValues = z.infer<typeof loginSchema>;
+type RegisterValues = z.infer<typeof registerSchema>;
+
+export default function AuthPage() {
+  const { user, isAuthenticated, login, register } = useAuth();
+  const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState<string>("login");
+
+  // If user is already logged in, redirect to appropriate dashboard
+  if (isAuthenticated && user) {
+    return <Redirect to={user.role === "admin" ? "/admin" : "/reseller"} />;
+  }
+
+  const loginForm = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+      role: "reseller"
+    }
+  });
+
+  const registerForm = useForm<RegisterValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+      referralToken: ""
+    }
+  });
+
+  const onLoginSubmit = async (values: LoginValues) => {
+    try {
+      await login(values.role, values.username, values.password);
+    } catch (error: any) {
+      toast({
+        title: "Login Failed",
+        description: error.message || "Could not login. Please check your credentials.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const onRegisterSubmit = async (values: RegisterValues) => {
+    try {
+      await register(values.username, values.password, values.referralToken);
+    } catch (error: any) {
+      toast({
+        title: "Registration Failed",
+        description: error.message || "Could not register. Please check your information.",
+        variant: "destructive"
